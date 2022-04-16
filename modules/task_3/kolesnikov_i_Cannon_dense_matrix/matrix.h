@@ -1,8 +1,9 @@
 // Copyright 2022 Kolesnikov Ilya
-#ifndef MODULES_TASK_1_KOLESNIKOV_I_CANNON_DENSE_MATRIX_MATRIX_H_
-#define MODULES_TASK_1_KOLESNIKOV_I_CANNON_DENSE_MATRIX_MATRIX_H_
+#ifndef MODULES_TASK_3_KOLESNIKOV_I_CANNON_DENSE_MATRIX_MATRIX_H_
+#define MODULES_TASK_3_KOLESNIKOV_I_CANNON_DENSE_MATRIX_MATRIX_H_
 #include <vector>
 #include <iostream>
+#include "tbb/tbb.h"
 
 class Matrix {
  public:
@@ -28,8 +29,10 @@ class Matrix {
         return matrix;
     }
     void generateMatrix(double num);
-    std::vector<std::vector<double>> multiplyByMatrix(Matrix matrix);
     std::vector< std::vector<double>> cannonAlgorithmSeq(Matrix matrix2,
+    std::vector< std::vector<double>> res_matrix, size_t block_size,
+    size_t block_count);
+    std::vector< std::vector<double>> cannonAlgorithmTBB(Matrix matrix2,
     std::vector< std::vector<double>> res_matrix, size_t block_size,
     size_t block_count);
     void shiftLeft(std::vector< std::vector<double>> *matr, size_t pos,
@@ -45,4 +48,4 @@ class Matrix {
     size_t size;
     std::vector<std::vector<double>> matrix;
 };
-#endif  // MODULES_TASK_1_KOLESNIKOV_I_CANNON_DENSE_MATRIX_MATRIX_H_
+#endif  // MODULES_TASK_3_KOLESNIKOV_I_CANNON_DENSE_MATRIX_MATRIX_H_

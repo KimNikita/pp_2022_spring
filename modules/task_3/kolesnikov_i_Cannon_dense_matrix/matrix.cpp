@@ -1,5 +1,5 @@
 // Copyright 2022 Kolesnikov Ilya
-#include "../../../modules/task_1/kolesnikov_i_Cannon_dense_matrix/matrix.h"
+#include "../../../modules/task_3/kolesnikov_i_Cannon_dense_matrix/matrix.h"
 
 void Matrix::generateMatrix(double num) {
     for (size_t i = 0; i < size; ++i) {
@@ -7,18 +7,6 @@ void Matrix::generateMatrix(double num) {
             matrix[i][j] = i*num;
         }
     }
-}
-
-std::vector< std::vector<double>> Matrix::multiplyByMatrix(Matrix matrix) {
-    Matrix res_matrix(size);
-    for (size_t i = 0; i < size; ++i) {
-        for (size_t j = 0; j < size; ++j) {
-            for (size_t k = 0; k < size; ++k) {
-                res_matrix.matrix[i][j] += this->matrix[i][k] * matrix.matrix[k][j];
-            }
-        }
-    }
-    return res_matrix.matrix;
 }
 
 void Matrix::shiftLeft(std::vector< std::vector<double>> *matr, size_t pos, size_t block_count, size_t skew) {
@@ -99,6 +87,35 @@ size_t block_count) {
             shiftLeft(&this->matrix, l, block_count, block_size);
             shiftUp(&matrix2.matrix, l, block_count, block_size);
         }
+    }
+    return res_matrix;
+}
+
+std::vector< std::vector<double>> Matrix::cannonAlgorithmTBB(Matrix matrix2,
+std::vector< std::vector<double>> res_matrix, size_t block_size,
+size_t block_count) {
+    tbb::parallel_for(tbb::blocked_range<size_t>(1, block_count), [&](const tbb::blocked_range<size_t>& range) {
+        for (size_t i = range.begin(); i < range.end(); ++i) {
+            for (size_t j = 0; j < i; ++j) {
+                shiftLeft(&this->matrix, i, block_count, block_size);
+                shiftUp(&matrix2.matrix, i, block_count, block_size);
+            }
+        }
+    });
+    for (size_t i = 0; i < block_count; ++i) {
+        tbb::parallel_for(tbb::blocked_range<size_t>(0, block_count), [&](const tbb::blocked_range<size_t>& range) {
+            for (size_t j = range.begin(); j < range.end(); ++j) {
+                for (size_t k = 0; k < block_count; ++k) {
+                    mutiplyByBlock(this->matrix, matrix2.matrix, &res_matrix, j, k, block_size);
+                }
+            }
+        });
+        tbb::parallel_for(tbb::blocked_range<size_t>(0, block_count), [&](const tbb::blocked_range<size_t>& range) {
+            for (size_t l = range.begin(); l < range.end(); ++l) {
+                shiftLeft(&this->matrix, l, block_count, block_size);
+                shiftUp(&matrix2.matrix, l, block_count, block_size);
+            }
+        });
     }
     return res_matrix;
 }
