@@ -42,9 +42,9 @@ std::vector<int> getMergedVector(std::vector<int> a, std::vector<int> b) {
     }
   }
 
-  for (i; i < a_size; i++)
+  for (; i < a_size; i++)
     res.push_back(a[i]);
-  for (j; j < b_size; j++)
+  for (; j < b_size; j++)
     res.push_back(b[j]);
 
   return res;
@@ -90,7 +90,7 @@ std::vector<int> radixSortParallel(const std::vector<int>& input_vec, int size) 
   int max_value = 0;
   int proc = omp_get_num_procs();
   int chunk = size / proc;
-  int pos, start, end, cur_proc = proc;
+  int pos, start, end, s;
   omp_set_num_threads(proc);
   std::deque<std::vector<int>> res(proc);
   std::vector<int> tmp;
@@ -116,8 +116,9 @@ std::vector<int> radixSortParallel(const std::vector<int>& input_vec, int size) 
 
   }
   // O(n*log2(proc))
-  for (int i = 1; i < res.size(); i += 2) {
+  for (int i = 1; i < s; i += 2) {
     res.push_back(getMergedVector(res[i-1], res[i]));
+    s = res.size();
   }
 
   return res[res.size()-1];
