@@ -90,7 +90,7 @@ std::vector<int> radixSortParallel(const std::vector<int>& input_vec, int size) 
   int max_value = 0;
   int proc = omp_get_num_procs();
   int chunk = size / proc;
-  int pos, start, end, s;
+  int pos, start, end, s = 0;
   omp_set_num_threads(proc);
   std::deque<std::vector<int>> res(proc);
   std::vector<int> tmp;
@@ -117,9 +117,9 @@ std::vector<int> radixSortParallel(const std::vector<int>& input_vec, int size) 
   }
   // O(n*log2(proc))
   for (int i = 1; i < s; i += 2) {
-    res.push_back(getMergedVector(res[i-1], res[i]));
+    res.push_back(getMergedVector(res[i - 1], res[i]));
     s = res.size();
   }
 
-  return res[res.size()-1];
+  return res[res.size() - 1];
 }
