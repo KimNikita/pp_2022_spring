@@ -35,8 +35,7 @@ std::vector<int> getMergedVector(std::vector<int> a, std::vector<int> b) {
     if (a[i] <= b[j]) {
       res.push_back(a[i]);
       i++;
-    }
-    else {
+    } else {
       res.push_back(b[j]);
       j++;
     }
@@ -112,8 +111,6 @@ std::vector<int> radixSortParallel(const std::vector<int>& input_vec, int size) 
       tmp = countSort(tmp, tmp.size(), place);
 
     res[pos] = tmp;
-#pragma omp barrier
-
   }
   // O(n*log2(proc))
   while (res.size() != 1) {
