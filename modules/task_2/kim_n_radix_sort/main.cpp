@@ -1,15 +1,15 @@
 // Copyright 2022 Kim Nikita
 #include <gtest/gtest.h>
-#include <vector>
 #include <omp.h>
+#include <vector>
 #include "./radix_sort.h"
 
 TEST(OMP, Vector_One_Size) {
   int size = 1;
   std::vector<int> input_vec = getRandomVector(size);
-  
+
   std::vector<int> exp_res = radixSort(input_vec, size);
-  
+
   std::vector<int> res = radixSortParallel(input_vec, size);
 
   ASSERT_EQ(exp_res, res);
@@ -18,9 +18,9 @@ TEST(OMP, Vector_One_Size) {
 TEST(OMP, Vector_Two_Size) {
   int size = 2;
   std::vector<int> input_vec = getRandomVector(size);
-  
+
   std::vector<int> exp_res = radixSort(input_vec, size);
-  
+
   std::vector<int> res = radixSortParallel(input_vec, size);
 
   ASSERT_EQ(exp_res, res);
@@ -29,9 +29,9 @@ TEST(OMP, Vector_Two_Size) {
 TEST(OMP, Vector_Odd_Size) {
   int size = 21;
   std::vector<int> input_vec = getRandomVector(size);
-  
+
   std::vector<int> exp_res = radixSort(input_vec, size);
-  
+
   std::vector<int> res = radixSortParallel(input_vec, size);
 
   ASSERT_EQ(exp_res, res);
@@ -40,9 +40,9 @@ TEST(OMP, Vector_Odd_Size) {
 TEST(OMP, Vector_Even_Size) {
   int size = 20;
   std::vector<int> input_vec = getRandomVector(size);
-  
+
   std::vector<int> exp_res = radixSort(input_vec, size);
-  
+
   std::vector<int> res = radixSortParallel(input_vec, size);
 
   ASSERT_EQ(exp_res, res);
@@ -51,9 +51,9 @@ TEST(OMP, Vector_Even_Size) {
 TEST(OMP, Vector_Odd_Large_Size) {
   int size = 121;
   std::vector<int> input_vec = getRandomVector(size);
-  
+
   std::vector<int> exp_res = radixSort(input_vec, size);
-  
+
   std::vector<int> res = radixSortParallel(input_vec, size);
 
   ASSERT_EQ(exp_res, res);
@@ -62,9 +62,9 @@ TEST(OMP, Vector_Odd_Large_Size) {
 TEST(OMP, Vector_Even_Large_Size) {
   int size = 120;
   std::vector<int> input_vec = getRandomVector(size);
-  
+
   std::vector<int> exp_res = radixSort(input_vec, size);
-  
+
   std::vector<int> res = radixSortParallel(input_vec, size);
 
   ASSERT_EQ(exp_res, res);
